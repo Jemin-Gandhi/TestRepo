@@ -59,19 +59,12 @@ public class Sequence3<T> extends SequenceSecondary<T> {
         assert 0 <= newLeftLength : "Violation of: 0 <= newLeftLength";
         assert newLeftLength <= leftStack.length() + rightStack.length() : ""
                 + "Violation of: newLeftLength <= |leftStack| + |rightStack|";
-        int length = leftStack.length();
-        if (length < newLeftLength) {
-            for (int i = 0; i < newLeftLength - length; i++) {
-                T x = rightStack.pop();
-                leftStack.push(x);
-            }
-        } else if (length > newLeftLength) {
-            for (int i = 0; i < length - newLeftLength; i++) {
-                T x = leftStack.pop();
-                rightStack.push(x);
-            }
+        while (leftStack.length() < newLeftLength) {
+            leftStack.push(rightStack.pop());
         }
-
+        while (leftStack.length() > newLeftLength) {
+            rightStack.push(leftStack.pop());
+        }
     }
 
     /**
@@ -163,6 +156,15 @@ public class Sequence3<T> extends SequenceSecondary<T> {
     public final Iterator<T> iterator() {
         setLengthOfLeftStack(this.left, this.right, 0);
         return this.right.iterator();
+    }
+    /*
+     * Other methods (overridden for performance reasons) ---------------------
+     */
+
+    @Override
+    public final void flip() {
+        setLengthOfLeftStack(this.left, this.right, 0);
+        this.right.flip();
     }
 
 }
