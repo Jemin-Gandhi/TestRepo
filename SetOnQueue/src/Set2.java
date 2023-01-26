@@ -49,6 +49,8 @@ public class Set2<T> extends SetSecondary<T> {
             if (!q.front().equals(x)) {
                 T temp = q.dequeue();
                 q.enqueue(temp);
+            } else {
+                i = length;
             }
         }
 
