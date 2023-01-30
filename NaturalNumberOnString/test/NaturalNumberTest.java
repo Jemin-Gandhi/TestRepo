@@ -339,11 +339,10 @@ public abstract class NaturalNumberTest {
          * Call method under test
          */
         int result = n.divideBy10();
-        int expected = nExpected.divideBy10();
         /*
          * Assert that values of variables match expectations
          */
-        assertEquals(expected, result);
+        assertEquals(0, result);
         assertEquals(nExpected, n);
     }
 
@@ -356,16 +355,15 @@ public abstract class NaturalNumberTest {
          * Set up variables
          */
         NaturalNumber n = this.constructorTest(1);
-        NaturalNumber nExpected = this.constructorRef(1);
+        NaturalNumber nExpected = this.constructorRef(0);
         /*
          * Call method under test
          */
         int result = n.divideBy10();
-        int expected = nExpected.divideBy10();
         /*
          * Assert that values of variables match expectations
          */
-        assertEquals(expected, result);
+        assertEquals(1, result);
         assertEquals(nExpected, n);
     }
 
@@ -379,15 +377,15 @@ public abstract class NaturalNumberTest {
          */
         int max = Integer.MAX_VALUE;
         NaturalNumber n = this.constructorTest(max);
-        NaturalNumber nExpected = this.constructorRef(max);
+        NaturalNumber nExpected = this.constructorRef("214748364");
         /*
          * Call method under test
          */
         int result = n.divideBy10();
-        int expected = nExpected.divideBy10();
         /*
          * Assert that values of variables match expectations
          */
+        final int expected = 7;
         assertEquals(expected, result);
         assertEquals(nExpected, n);
     }
