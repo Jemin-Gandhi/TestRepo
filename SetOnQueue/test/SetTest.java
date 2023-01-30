@@ -285,6 +285,24 @@ public abstract class SetTest {
     }
 
     @Test
+    public final void testNotContainsMoreThanOne() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "green", "blue");
+        Set<String> sExpected = this.createFromArgsRef("red", "green", "blue");
+        /*
+         * Call method under test
+         */
+        boolean result = s.contains("blue");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(true, result);
+        assertEquals(sExpected, s);
+    }
+
+    @Test
     public final void testSizeEmpty() {
         /*
          * Set up variables

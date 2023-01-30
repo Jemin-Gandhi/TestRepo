@@ -45,13 +45,11 @@ public class Set2<T> extends SetSecondary<T> {
     private static <T> void moveToFront(Queue<T> q, T x) {
         assert q != null : "Violation of: q is not null";
         int length = q.length();
-        for (int i = 0; i < length; i++) {
-            if (!q.front().equals(x)) {
-                T temp = q.dequeue();
-                q.enqueue(temp);
-            } else {
-                i = length;
-            }
+        int count = 0;
+        while (count < length && !q.front().equals(x)) {
+            T temp = q.dequeue();
+            q.enqueue(temp);
+            count++;
         }
 
     }
@@ -138,12 +136,8 @@ public class Set2<T> extends SetSecondary<T> {
     @Override
     public final boolean contains(T x) {
         assert x != null : "Violation of: x is not null";
-        boolean result = false;
         moveToFront(this.elements, x);
-        if (this.elements.length() > 0) {
-            result = this.elements.front().equals(x);
-        }
-        return result;
+        return this.elements.length() > 0 && this.elements.front().equals(x);
     }
 
     @Override
