@@ -149,8 +149,10 @@ public class NaturalNumber3 extends NaturalNumberSecondary {
 
         int result = 0;
         if (this.rep.length() > 0) {
-            String k = "";
-            k += this.rep.charAt(this.rep.length() - 1);
+            /*
+             * remove the last character.
+             */
+            String k = this.rep.substring(this.rep.length() - 1);
             this.rep = this.rep.substring(0, this.rep.length() - 1);
             result = Integer.parseInt(k);
         }

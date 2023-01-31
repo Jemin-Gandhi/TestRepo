@@ -195,8 +195,13 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables and call method under test
          */
-        NaturalNumber n = this.constructorTest(new NaturalNumber2(0));
-        NaturalNumber nExpected = this.constructorRef(new NaturalNumber2(0));
+        /*
+         * Create a natural number from NaturalNumber2 as the argument for
+         * constructor
+         */
+        NaturalNumber argument = new NaturalNumber2(0);
+        NaturalNumber n = this.constructorTest(argument);
+        NaturalNumber nExpected = this.constructorRef(argument);
         /*
          * Assert that values of variables match expectations
          */
@@ -211,10 +216,13 @@ public abstract class NaturalNumberTest {
         /*
          * Set up variables and call method under test
          */
-        NaturalNumber n = this
-                .constructorTest(new NaturalNumber2("2147483647"));
-        NaturalNumber nExpected = this
-                .constructorRef(new NaturalNumber2("2147483647"));
+        /*
+         * Create a natural number from NaturalNumber2 as the argument for
+         * constructor
+         */
+        NaturalNumber argument = new NaturalNumber2("2147483647");
+        NaturalNumber n = this.constructorTest(argument);
+        NaturalNumber nExpected = this.constructorRef(argument);
         /*
          * Assert that values of variables match expectations
          */
@@ -314,11 +322,11 @@ public abstract class NaturalNumberTest {
         int max = Integer.MAX_VALUE;
         NaturalNumber n = this.constructorTest(max);
         NaturalNumber nExpected = this.constructorRef(max);
-        nExpected.multiplyBy10(1);
         /*
          * Call method under test
          */
         n.multiplyBy10(1);
+        nExpected.multiplyBy10(1);
         /*
          * Assert that values of variables match expectations
          */
@@ -377,16 +385,16 @@ public abstract class NaturalNumberTest {
          */
         int max = Integer.MAX_VALUE;
         NaturalNumber n = this.constructorTest(max);
-        NaturalNumber nExpected = this.constructorRef("214748364");
+        NaturalNumber nExpected = this.constructorTest(max);
         /*
          * Call method under test
          */
         int result = n.divideBy10();
+        int resultExpected = nExpected.divideBy10();
         /*
          * Assert that values of variables match expectations
          */
-        final int expected = 7;
-        assertEquals(expected, result);
+        assertEquals(resultExpected, result);
         assertEquals(nExpected, n);
     }
 
@@ -408,6 +416,27 @@ public abstract class NaturalNumberTest {
          * Assert that values of variables match expectations
          */
         assertEquals(true, result);
+        assertEquals(nExpected, n);
+    }
+
+    /**
+     * test isZero false.
+     */
+    @Test
+    public final void testOneIsZeroFalse() {
+        /*
+         * Set up variables
+         */
+        NaturalNumber n = this.constructorTest(1);
+        NaturalNumber nExpected = this.constructorRef(1);
+        /*
+         * Call method under test
+         */
+        boolean result = n.isZero();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(false, result);
         assertEquals(nExpected, n);
     }
 

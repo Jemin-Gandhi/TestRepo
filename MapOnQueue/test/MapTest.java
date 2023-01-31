@@ -152,17 +152,17 @@ public abstract class MapTest {
          */
 
         Map<String, String> s = this.createFromArgsTest("red", "apple");
-        Map<String, String> sExpected = this.createFromArgsRef();
+        Map<String, String> sExpected = this.createFromArgsRef("red", "apple");
         /*
          * Call method under test
          */
         Pair<String, String> p = s.remove("red");
+        Pair<String, String> pExpected = s.remove("red");
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals("red", p.key());
-        assertEquals("apple", p.value());
+        assertEquals(pExpected, p);
     }
 
     /**
@@ -177,17 +177,18 @@ public abstract class MapTest {
         Map<String, String> s = this.createFromArgsTest("red", "apple",
                 "yellow", "banana", "purple", "grape");
         Map<String, String> sExpected = this.createFromArgsRef("red", "apple",
-                "yellow", "banana");
+                "yellow", "banana", "purple", "grape");
         /*
          * Call method under test
          */
         Pair<String, String> p = s.remove("purple");
+        Pair<String, String> pExpected = s.remove("purple");
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals("purple", p.key());
-        assertEquals("grape", p.value());
+        assertEquals(pExpected, p);
+
     }
 
     /**
@@ -209,8 +210,9 @@ public abstract class MapTest {
          * Assert that values of variables match expectations
          */
         assertEquals(true, sExpected.hasKey(p.key()));
-        sExpected.remove(p.key());
+        Pair<String, String> pExpected = sExpected.remove(p.key());
         assertEquals(sExpected, s);
+        assertEquals(pExpected, p);
     }
 
     /**
@@ -234,8 +236,9 @@ public abstract class MapTest {
          * Assert that values of variables match expectations
          */
         assertEquals(true, sExpected.hasKey(p.key()));
-        sExpected.remove(p.key());
+        Pair<String, String> pExpected = sExpected.remove(p.key());
         assertEquals(sExpected, s);
+        assertEquals(pExpected, p);
     }
 
     /**
@@ -253,11 +256,12 @@ public abstract class MapTest {
          * Call method under test
          */
         String value = s.value("red");
+        String valueExpected = s.value("red");
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals("apple", value);
+        assertEquals(valueExpected, value);
     }
 
     /**
@@ -277,11 +281,12 @@ public abstract class MapTest {
          * Call method under test
          */
         String value = s.value("yellow");
+        String valueExpected = s.value("yellow");
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals("banana", value);
+        assertEquals(valueExpected, value);
     }
 
     /**
@@ -321,11 +326,12 @@ public abstract class MapTest {
          * Call method under test
          */
         boolean result = s.hasKey("red");
+        boolean resultExpected = sExpected.hasKey("red");
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals(true, result);
+        assertEquals(resultExpected, result);
     }
 
     /**
