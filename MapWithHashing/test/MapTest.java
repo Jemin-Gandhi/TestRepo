@@ -9,7 +9,7 @@ import components.map.Map.Pair;
  * JUnit test fixture for {@code Map<String, String>}'s constructor and kernel
  * methods.
  *
- * @author Put your name here
+ * @author Zhen Liu and Yingqi Gao
  *
  */
 public abstract class MapTest {
