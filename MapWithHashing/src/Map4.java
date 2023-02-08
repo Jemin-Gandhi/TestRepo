@@ -186,6 +186,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
 
         int i = mod(key.hashCode(), this.hashTable.length);
         this.hashTable[i].add(key, value);
+        this.size++;
 
     }
 
@@ -195,7 +196,9 @@ public class Map4<K, V> extends MapSecondary<K, V> {
         assert this.hasKey(key) : "Violation of: key is in DOMAIN(this)";
 
         int i = mod(key.hashCode(), this.hashTable.length);
+        this.size--;
         return this.hashTable[i].remove(key);
+
     }
 
     @Override
@@ -209,6 +212,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
                 removed = true;
             }
         }
+        this.size--;
         return p;
     }
 
@@ -231,11 +235,7 @@ public class Map4<K, V> extends MapSecondary<K, V> {
 
     @Override
     public final int size() {
-        int size = 0;
-        for (int i = 0; i < this.hashTable.length; i++) {
-            size += this.hashTable[i].size();
-        }
-        return size;
+        return this.size;
     }
 
     @Override
