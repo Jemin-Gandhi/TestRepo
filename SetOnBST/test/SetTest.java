@@ -172,10 +172,11 @@ public abstract class SetTest {
     }
 
     /**
-     * test for remove element leaving set of size one.
+     * test for remove element leaving set of size one and the right tree is
+     * empty.
      */
     @Test
-    public final void testRemoveLeavingNonEmptyOne() {
+    public final void testRemoveLeavingNonEmptyOne1() {
         /*
          * Set up variables
          */
@@ -193,15 +194,16 @@ public abstract class SetTest {
     }
 
     /**
-     * test for remove element leaving set of size more than one.
+     * test for remove element leaving set of size one and the right tree is not
+     * empty.
      */
     @Test
-    public final void testRemoveLeavingNonEmptyMoreThanOne() {
+    public final void testRemoveLeavingNonEmptyOne2() {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("red", "green", "blue");
-        Set<String> sExpected = this.createFromArgsRef("green", "blue");
+        Set<String> s = this.createFromArgsTest("red", "blue", "violet");
+        Set<String> sExpected = this.createFromArgsRef("blue", "violet");
         /*
          * Call method under test
          */
@@ -211,6 +213,28 @@ public abstract class SetTest {
          */
         assertEquals(sExpected, s);
         assertEquals("red", x);
+    }
+
+    /**
+     * test for removing element which is not the root of the tree and leaving
+     * set of size more than one.
+     */
+    @Test
+    public final void testRemoveLeavingNonEmptyMoreThanOne() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "green", "blue");
+        Set<String> sExpected = this.createFromArgsRef("red", "blue");
+        /*
+         * Call method under test
+         */
+        String x = s.remove("green");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("green", x);
     }
 
     /**
