@@ -110,10 +110,10 @@ public abstract class SetTest {
     }
 
     /**
-     * test for add on set of size 1.
+     * test to add on left tree.
      */
     @Test
-    public final void testAddNonEmptyOne() {
+    public final void testAddLTree() {
         /*
          * Set up variables
          */
@@ -130,16 +130,15 @@ public abstract class SetTest {
     }
 
     /**
-     * test for add on set of size more than 1.
+     * test to add on right tree.
      */
     @Test
-    public final void testAddNonEmptyMoreThanOne() {
+    public final void testAddRTree() {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("red", "blue", "green");
-        Set<String> sExpected = this.createFromArgsRef("red", "blue", "green",
-                "yellow");
+        Set<String> s = this.createFromArgsTest("red");
+        Set<String> sExpected = this.createFromArgsRef("red", "yellow");
         /*
          * Call method under test
          */
@@ -151,10 +150,32 @@ public abstract class SetTest {
     }
 
     /**
-     * test for remove element and leaving empty set.
+     * test to add on right tree.
      */
     @Test
-    public final void testRemoveLeavingEmpty() {
+    public final void testAddMore() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("green", "blue", "black",
+                "purple", "yellow");
+        Set<String> sExpected = this.createFromArgsRef("green", "blue", "black",
+                "purple", "yellow", "red");
+        /*
+         * Call method under test
+         */
+        s.add("red");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+    }
+
+    /**
+     * test to remove the root.
+     */
+    @Test
+    public final void testRemoveRoot() {
         /*
          * Set up variables
          */
@@ -172,16 +193,59 @@ public abstract class SetTest {
     }
 
     /**
-     * test for remove element leaving set of size one and the right tree is
-     * empty.
+     * test to remove the left subtree leaving root.
      */
     @Test
-    public final void testRemoveLeavingNonEmptyOne1() {
+    public final void testRemoveLTree() {
         /*
          * Set up variables
          */
         Set<String> s = this.createFromArgsTest("red", "blue");
-        Set<String> sExpected = this.createFromArgsRef("blue");
+        Set<String> sExpected = this.createFromArgsRef("red");
+        /*
+         * Call method under test
+         */
+        String x = s.remove("blue");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("blue", x);
+    }
+
+    /**
+     * test to remove the right subtree leaving root.
+     */
+    @Test
+    public final void testRemoveRTree() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "yellow");
+        Set<String> sExpected = this.createFromArgsRef("red");
+        /*
+         * Call method under test
+         */
+        String x = s.remove("yellow");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("yellow", x);
+    }
+
+    /**
+     * test to remove root from more.
+     */
+    @Test
+    public final void testRemoveRootFromMore() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "blue", "yellow",
+                "green");
+        Set<String> sExpected = this.createFromArgsRef("blue", "yellow",
+                "green");
         /*
          * Call method under test
          */
@@ -194,47 +258,26 @@ public abstract class SetTest {
     }
 
     /**
-     * test for remove element leaving set of size one and the right tree is not
-     * empty.
+     * test to remove from more.
      */
     @Test
-    public final void testRemoveLeavingNonEmptyOne2() {
+    public final void testRemoveFromMore() {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("red", "blue", "violet");
-        Set<String> sExpected = this.createFromArgsRef("blue", "violet");
+        Set<String> s = this.createFromArgsTest("red", "blue", "yellow",
+                "green", "purple");
+        Set<String> sExpected = this.createFromArgsRef("red", "blue", "yellow",
+                "green");
         /*
          * Call method under test
          */
-        String x = s.remove("red");
+        String x = s.remove("purple");
         /*
          * Assert that values of variables match expectations
          */
         assertEquals(sExpected, s);
-        assertEquals("red", x);
-    }
-
-    /**
-     * test for removing element which is not the root of the tree and leaving
-     * set of size more than one.
-     */
-    @Test
-    public final void testRemoveLeavingNonEmptyMoreThanOne() {
-        /*
-         * Set up variables
-         */
-        Set<String> s = this.createFromArgsTest("red", "green", "blue");
-        Set<String> sExpected = this.createFromArgsRef("red", "blue");
-        /*
-         * Call method under test
-         */
-        String x = s.remove("green");
-        /*
-         * Assert that values of variables match expectations
-         */
-        assertEquals(sExpected, s);
-        assertEquals("green", x);
+        assertEquals("purple", x);
     }
 
     /**
@@ -260,15 +303,15 @@ public abstract class SetTest {
     }
 
     /**
-     * test removeAny method leaving one element.
+     * test remove the root and left tree is empty.
      */
     @Test
     public final void testRemoveAnyLeavingNonEmptyOne() {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("red", "blue");
-        Set<String> sExpected = this.createFromArgsRef("red", "blue");
+        Set<String> s = this.createFromArgsTest("red", "yellow");
+        Set<String> sExpected = this.createFromArgsRef("red", "yellow");
         /*
          * Call method under test
          */
@@ -282,7 +325,8 @@ public abstract class SetTest {
     }
 
     /**
-     * test removeAny method leaving more than one element.
+     * test removeAny method leaving more than one element and the left tree is
+     * not empty.
      */
     @Test
     public final void testRemoveAnyLeavingNonEmptyMoreThanOne() {
@@ -304,10 +348,31 @@ public abstract class SetTest {
     }
 
     /**
-     * test contains method on the set of size one.
+     * test contains on empty tree.
      */
     @Test
     public final void testContainsOne() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest();
+        Set<String> sExpected = this.createFromArgsRef();
+        /*
+         * Call method under test
+         */
+        boolean result = s.contains("red");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(false, result);
+        assertEquals(sExpected, s);
+    }
+
+    /**
+     * test contains root.
+     */
+    @Test
+    public final void testContainsRoot() {
         /*
          * Set up variables
          */
@@ -325,19 +390,21 @@ public abstract class SetTest {
     }
 
     /**
-     * test contains method on the set of size more than one.
+     * test contains more true.
      */
     @Test
-    public final void testContainsMoreThanOne() {
+    public final void testContainsMoreTrue() {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("red", "green", "blue");
-        Set<String> sExpected = this.createFromArgsRef("red", "green", "blue");
+        Set<String> s = this.createFromArgsTest("red", "green", "blue", "black",
+                "yellow", "purple");
+        Set<String> sExpected = this.createFromArgsRef("red", "green", "blue",
+                "black", "yellow", "purple");
         /*
          * Call method under test
          */
-        boolean result = s.contains("blue");
+        boolean result = s.contains("purple");
         /*
          * Assert that values of variables match expectations
          */
@@ -346,19 +413,21 @@ public abstract class SetTest {
     }
 
     /**
-     * test contains method that the result is false.
+     * test contains more false.
      */
     @Test
-    public final void testNotContainsMoreThanOne() {
+    public final void testContainsMoreFalse() {
         /*
          * Set up variables
          */
-        Set<String> s = this.createFromArgsTest("red", "green", "blue");
-        Set<String> sExpected = this.createFromArgsRef("red", "green", "blue");
+        Set<String> s = this.createFromArgsTest("red", "green", "blue", "black",
+                "yellow", "purple");
+        Set<String> sExpected = this.createFromArgsRef("red", "green", "blue",
+                "black", "yellow", "purple");
         /*
          * Call method under test
          */
-        boolean result = s.contains("yellow");
+        boolean result = s.contains("scarlet");
         /*
          * Assert that values of variables match expectations
          */
