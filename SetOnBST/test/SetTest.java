@@ -172,10 +172,33 @@ public abstract class SetTest {
     }
 
     /**
+     * test to add several items.
+     */
+    @Test
+    public final void testAddMoreTimes() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("green", "blue", "black",
+                "purple");
+        Set<String> sExpected = this.createFromArgsRef("green", "blue", "black",
+                "purple", "yellow", "red");
+        /*
+         * Call method under test
+         */
+        s.add("red");
+        s.add("yellow");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+    }
+
+    /**
      * test to remove the root.
      */
     @Test
-    public final void testRemoveRoot() {
+    public final void testRemoveRoot1() {
         /*
          * Set up variables
          */
@@ -193,10 +216,31 @@ public abstract class SetTest {
     }
 
     /**
+     * test to remove the root.
+     */
+    @Test
+    public final void testRemoveRoot2() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "blue", "yellow");
+        Set<String> sExpected = this.createFromArgsRef("red", "yellow");
+        /*
+         * Call method under test
+         */
+        String x = s.remove("blue");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("blue", x);
+    }
+
+    /**
      * test to remove the left subtree leaving root.
      */
     @Test
-    public final void testRemoveLTree() {
+    public final void testRemoveLTree1() {
         /*
          * Set up variables
          */
@@ -214,15 +258,57 @@ public abstract class SetTest {
     }
 
     /**
+     * test to remove the left subtree leaving root.
+     */
+    @Test
+    public final void testRemoveLTree2() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red");
+        Set<String> sExpected = this.createFromArgsRef();
+        /*
+         * Call method under test
+         */
+        String x = s.remove("red");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("red", x);
+    }
+
+    /**
      * test to remove the right subtree leaving root.
      */
     @Test
-    public final void testRemoveRTree() {
+    public final void testRemoveRTree1() {
         /*
          * Set up variables
          */
         Set<String> s = this.createFromArgsTest("red", "yellow");
         Set<String> sExpected = this.createFromArgsRef("red");
+        /*
+         * Call method under test
+         */
+        String x = s.remove("yellow");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("yellow", x);
+    }
+
+    /**
+     * test to remove the right subtree leaving root.
+     */
+    @Test
+    public final void testRemoveRTree2() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "yellow", "blue");
+        Set<String> sExpected = this.createFromArgsRef("red", "blue");
         /*
          * Call method under test
          */
@@ -278,6 +364,30 @@ public abstract class SetTest {
          */
         assertEquals(sExpected, s);
         assertEquals("purple", x);
+    }
+
+    /**
+     * test to remove several items.
+     */
+    @Test
+    public final void testRemoveFromMoreTimes() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "blue", "yellow",
+                "green", "purple");
+        Set<String> sExpected = this.createFromArgsRef("red", "blue", "yellow");
+        /*
+         * Call method under test
+         */
+        String x = s.remove("purple");
+        String y = s.remove("green");
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals("purple", x);
+        assertEquals("green", y);
     }
 
     /**
@@ -460,7 +570,7 @@ public abstract class SetTest {
      * test for size method on set of size one.
      */
     @Test
-    public final void testSizeNonEmptyOne() {
+    public final void testSizeOne() {
         /*
          * Set up variables
          */
@@ -475,6 +585,27 @@ public abstract class SetTest {
          */
         assertEquals(sExpected, s);
         assertEquals(1, i);
+    }
+
+    /**
+     * test for size method on set of size two.
+     */
+    @Test
+    public final void testSizeTwo() {
+        /*
+         * Set up variables
+         */
+        Set<String> s = this.createFromArgsTest("red", "yellow");
+        Set<String> sExpected = this.createFromArgsRef("red", "yellow");
+        /*
+         * Call method under test
+         */
+        int i = s.size();
+        /*
+         * Assert that values of variables match expectations
+         */
+        assertEquals(sExpected, s);
+        assertEquals(2, i);
     }
 
     /**
