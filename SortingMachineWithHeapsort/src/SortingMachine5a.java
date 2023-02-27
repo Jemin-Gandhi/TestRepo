@@ -183,18 +183,25 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
 
         int leftIndex = top * 2 + 1;
         int rightIndex = leftIndex + 1;
-        if (leftIndex <= last) {
+        if (leftIndex <= last) { //if the left child exists.
             T left = array[leftIndex];
             T smallest = left;
             int smallestIndex = leftIndex;
             if (rightIndex <= last
                     && order.compare(array[rightIndex], left) < 0) {
+                //if right child exists and is less than the left child.
                 T right = array[rightIndex];
                 smallest = right;
                 smallestIndex = rightIndex;
             }
             if (order.compare(smallest, array[top]) < 0) {
+                /*
+                 * exchange the value of root and the smallest value.
+                 */
                 exchangeEntries(array, top, smallestIndex);
+                /*
+                 * recursively siftdown the subtree.
+                 */
                 siftDown(array, smallestIndex, last, order);
             }
         }
@@ -244,10 +251,20 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         int leftIndex = top * 2 + 1;
         int rightIndex = leftIndex + 1;
         if (leftIndex < array.length) {
+            /*
+             * recursively heapify the left subtree if the left child exists.
+             */
             heapify(array, leftIndex, order);
             if (rightIndex < array.length) {
+                /*
+                 * recursively heapify the right subtree if the right child
+                 * exists.
+                 */
                 heapify(array, rightIndex, order);
             }
+            /*
+             * after the subtrees are heapified, siftdown the root.
+             */
             siftDown(array, top, array.length - 1, order);
         }
     }
@@ -287,10 +304,16 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
          */
         T[] heap = (T[]) (new Object[q.length()]);
         int i = 0;
+        /*
+         * remove all elements from the entries queue to the heap array.
+         */
         while (q.length() > 0) {
             heap[i] = q.dequeue();
             i++;
         }
+        /*
+         * heapify the heap array.
+         */
         heapify(heap, 0, order);
         return heap;
     }
@@ -497,6 +520,9 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         assert this.isInInsertionMode() : "Violation of: this.insertion_mode";
 
         this.insertionMode = false;
+        /*
+         * bulid a heap with the length of the entries queue.
+         */
         this.heap = buildHeap(this.entries, this.machineOrder);
         this.heapSize = this.heap.length;
 
@@ -508,9 +534,19 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
         assert !this
                 .isInInsertionMode() : "Violation of: not this.insertion_mode";
         assert this.size() > 0 : "Violation of: this.contents /= {}";
+        /*
+         * get the first element in the heap.
+         */
         T result = this.heap[0];
+        /*
+         * exchange the value of the first element and the last element of the
+         * heap.
+         */
+        exchangeEntries(this.heap, 0, this.heapSize - 1);
         this.heapSize--;
-        exchangeEntries(this.heap, 0, this.heapSize);
+        /*
+         * after the first element is removed, siftdown the new root.
+         */
         siftDown(this.heap, 0, this.heapSize - 1, this.machineOrder);
         assert this.conventionHolds();
         return result;
@@ -532,6 +568,9 @@ public class SortingMachine5a<T> extends SortingMachineSecondary<T> {
     public final int size() {
 
         int result = this.entries.length();
+        /*
+         * if sm is in extractionMode, then the return value is the heapSize.
+         */
         if (!this.insertionMode) {
             result = this.heapSize;
         }

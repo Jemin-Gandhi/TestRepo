@@ -153,31 +153,6 @@ public abstract class SortingMachineTest {
     }
 
     /**
-     * test to remove the first element and leaving the sorting machine empty.
-     */
-    @Test
-    public final void testRemoveFirstLeavingEmpty() {
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
-                "green");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
-        m.removeFirst();
-        assertEquals(mExpected, m);
-    }
-
-    /**
-     * test to remove the first element from sorting machine leaving not empty.
-     */
-    @Test
-    public final void testRemoveFirstLeavingNotEmpty() {
-        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
-                "green", "red", "yellow");
-        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
-                "red", "yellow");
-        m.removeFirst();
-        assertEquals(mExpected, m);
-    }
-
-    /**
      * test to change the insertion mode to extraction mode.
      */
     @Test
@@ -203,10 +178,65 @@ public abstract class SortingMachineTest {
     }
 
     /**
-     * test for isInsertionMode method and the result should be true.
+     * test to remove the first element and leaving the sorting machine empty.
      */
     @Test
-    public final void testIsInInsertionModeTrue() {
+    public final void testRemoveFirstLeavingEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        m.removeFirst();
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * test to remove the first element from sorting machine leaving not empty.
+     * test when the siftdown method called on only left child exists.
+     */
+    @Test
+    public final void testRemoveFirstLeavingNotEmpty1() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green", "red", "yellow");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "red", "yellow");
+        m.removeFirst();
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * test to remove the first element from sorting machine leaving not empty.
+     * test when the siftdown method called on both left and right children
+     * exist.
+     */
+    @Test
+    public final void testRemoveFirstLeavingNotEmpty2() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
+                "green", "purple", "yellow", "red");
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
+                "purple", "yellow", "red");
+        m.removeFirst();
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * test for isInsertionMode method on empty sm and the result should be
+     * true.
+     */
+    @Test
+    public final void testIsInInsertionModeEmptyTrue() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, true);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true);
+        boolean result = m.isInInsertionMode();
+        assertEquals(true, result);
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * test for isInsertionMode method on non-empty sm and the result should be
+     * true.
+     */
+    @Test
+    public final void testIsInInsertionModeNonEmptyTrue() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, true, "green",
                 "red", "yellow");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, true,
@@ -217,10 +247,24 @@ public abstract class SortingMachineTest {
     }
 
     /**
-     * test for isInsertionMode method and the result should be false.
+     * test for isInsertionMode method on empty sm and the result should be
+     * false.
      */
     @Test
-    public final void testIsInInsertionModeFalse() {
+    public final void testIsInInsertionModeTrue() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        boolean result = m.isInInsertionMode();
+        assertEquals(true, result);
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * test for isInsertionMode method on non-empty sm and the result should be
+     * false.
+     */
+    @Test
+    public final void testIsInInsertionModeNonEmptyFalse() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
                 "green", "red", "yellow");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
@@ -231,10 +275,21 @@ public abstract class SortingMachineTest {
     }
 
     /**
-     * test the order method.
+     * test the order method on empty sm.
      */
     @Test
-    public final void testOrder() {
+    public final void testOrderEmpty() {
+        SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
+        SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
+        assertEquals(mExpected.order(), m.order());
+        assertEquals(mExpected, m);
+    }
+
+    /**
+     * test the order method on non-empty sm.
+     */
+    @Test
+    public final void testOrderNonEmpty() {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, false,
                 "green", "red", "yellow");
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false,
