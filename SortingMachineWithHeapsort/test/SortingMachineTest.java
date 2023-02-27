@@ -255,7 +255,7 @@ public abstract class SortingMachineTest {
         SortingMachine<String> m = this.createFromArgsTest(ORDER, false);
         SortingMachine<String> mExpected = this.createFromArgsRef(ORDER, false);
         boolean result = m.isInInsertionMode();
-        assertEquals(true, result);
+        assertEquals(false, result);
         assertEquals(mExpected, m);
     }
 
