@@ -238,14 +238,17 @@ public class List3<T> extends ListSecondary<T> {
         assert x != null : "Violation of: x is not null";
 
         Node p = new Node();
-        Node q = this.lastLeft;
-        Node r = q.next;
-        p.data = x;
+        Node q = this.lastLeft; //current last node in left
+        Node r = q.next; //current first node in right
+        p.data = x; //set the data of p to the given value
+        /*
+         * process of adding the new node at the front of right.
+         */
         p.next = r;
         p.previous = q;
         q.next = p;
         r.previous = p;
-        this.rightLength++;
+        this.rightLength++; //increase the rightLength
 
         assert this.conventionHolds();
     }
@@ -254,13 +257,17 @@ public class List3<T> extends ListSecondary<T> {
     public final T removeRightFront() {
         assert this.rightLength() > 0 : "Violation of: this.right /= <>";
 
-        Node p = this.lastLeft;
-        Node q = p.next;
-        Node r = q.next;
+        Node p = this.lastLeft; //current last node in left
+        Node q = p.next; //current first node in right
+        Node r = q.next; //the second node in right
         T x = q.data;
+        /*
+         * process of removing the front of right and connecting the next node
+         * to the lastLeft element.
+         */
         p.next = r;
         r.previous = p;
-        this.rightLength--;
+        this.rightLength--; //decrease the rightLength
 
         assert this.conventionHolds();
         // Fix this line to return the result after checking the convention.
@@ -271,6 +278,9 @@ public class List3<T> extends ListSecondary<T> {
     public final void advance() {
         assert this.rightLength() > 0 : "Violation of: this.right /= <>";
 
+        /*
+         * directly make the lastLeft point to the next node of the current one.
+         */
         Node p = this.lastLeft.next;
         this.lastLeft = p;
         this.leftLength++;
@@ -282,6 +292,9 @@ public class List3<T> extends ListSecondary<T> {
     @Override
     public final void moveToStart() {
 
+        /*
+         * reset the lastLeft node to the preStart node.
+         */
         this.lastLeft = this.preStart;
         this.rightLength += this.leftLength;
         this.leftLength = 0;
