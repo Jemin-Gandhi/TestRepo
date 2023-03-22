@@ -7,6 +7,7 @@ IF random THEN
   infect
   move
 ELSE
+  infect
   skip
 END IF
 WHILE next-is-wall DO
