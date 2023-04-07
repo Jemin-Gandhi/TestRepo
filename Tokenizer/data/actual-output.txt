@@ -43,4 +43,7 @@ KEYWORD   : <END>
 KEYWORD   : <WHILE>
 KEYWORD   : <END>
 IDENTIFIER: <SampleProgram>
+IDENTIFIER: <cchjgkhglu>
+IDENTIFIER: <gj>
+IDENTIFIER: <uuy>
 ERROR     : <### END OF INPUT ###>

@@ -75,12 +75,10 @@ public final class Program1Parse1 extends Program1 {
                 "The start name cannot be equal to"
                         + " primitive instruction.");
         String is = tokens.dequeue(); // dequeue the "is" keyword.
-        Reporter.assertElseFatalError(is.equals("IS"),
-                "The keyword violates CFG.");
+        Reporter.assertElseFatalError(is.equals("IS"), "Keyword IS missing");
         body.parseBlock(tokens);
         String end = tokens.dequeue(); // dequeue the "end" keyword.
-        Reporter.assertElseFatalError(end.equals("END"),
-                "The keyword violates CFG.");
+        Reporter.assertElseFatalError(end.equals("END"), "Keyword END missing");
         String str1 = tokens.dequeue(); // dequeue the ending name.
         /*
          * check if the start name is the same as ending name.
@@ -88,7 +86,6 @@ public final class Program1Parse1 extends Program1 {
         Reporter.assertElseFatalError(str1.equals(str),
                 "The ending name " + "should be equal to the start name");
 
-        // This line added just to make the program compilable.
         return str;
     }
 
@@ -121,7 +118,7 @@ public final class Program1Parse1 extends Program1 {
         assert tokens.length() > 0 : ""
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
-        String program = tokens.dequeue(); // dequeue the "program" keyword.
+        String program = tokens.dequeue(); // dequeue the "PROGRAM" keyword.
         /*
          * check if the prefix is a valid keyword.
          */
@@ -132,19 +129,9 @@ public final class Program1Parse1 extends Program1 {
          * check if the start name is identifier.
          */
         Reporter.assertElseFatalError(Tokenizer.isIdentifier(str),
-                "The start name should" + "be a valid identifier.");
-        /*
-         * check if the start name is the same as primitive instruction.
-         */
-        boolean isPrimitive = !(str.equals("turnright")
-                || str.equals("turnleft") || str.equals("skip")
-                || str.equals("infect") || str.equals("move"));
-        Reporter.assertElseFatalError(isPrimitive,
-                "The start name cannot be equal to"
-                        + " primitive instruction.");
-        String is = tokens.dequeue(); // dequeue the "is" keyword.
-        Reporter.assertElseFatalError(is.equals("IS"),
-                "The keyword violates CFG.");
+                "The start name should" + " be a valid identifier.");
+        String is = tokens.dequeue(); // dequeue the "IS" keyword.
+        Reporter.assertElseFatalError(is.equals("IS"), "Keyword IS missing.");
         String next = tokens.front();
         Map<String, Statement> c = this.newContext();
         while (next.equals("INSTRUCTION")) {
@@ -158,21 +145,22 @@ public final class Program1Parse1 extends Program1 {
         }
         String begin = tokens.dequeue(); // dequeue the "BEGIN" keyword.
         Reporter.assertElseFatalError(begin.equals("BEGIN"),
-                "The keyword violates CFG.");
+                "Keyword BEGIN missing");
         Statement b = this.newBody();
         b.parseBlock(tokens);
-        String end = tokens.dequeue(); // dequeue the "end" keyword.
+        String end = tokens.dequeue(); // dequeue the "END" keyword.
         Reporter.assertElseFatalError(end.equals("END"),
-                "The keyword violates CFG.");
+                "Keyword END missing.");
         String str1 = tokens.dequeue(); // dequeue the ending name.
         /*
          * check if the start name is the same as ending name.
          */
         Reporter.assertElseFatalError(str1.equals(str),
                 "The ending name " + "should be equal to the start name");
-        String endOfInput = tokens.dequeue();
-        Reporter.assertElseFatalError(endOfInput.equals("### END OF INPUT ###"),
-                "The suffix is not valid.");
+        Reporter.assertElseFatalError(
+                tokens.front().equals("### END OF INPUT ###"),
+                "The suffix is not ###END OF INOUT### but is "
+                        + tokens.front());
         this.setName(str);
         this.swapBody(b);
         this.swapContext(c);
