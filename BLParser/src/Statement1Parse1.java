@@ -70,7 +70,7 @@ public final class Statement1Parse1 extends Statement1 {
                 "Shoud be a valid condition.");
         String then = tokens.dequeue();
         Reporter.assertElseFatalError(then.equals("THEN"),
-                "Keyword violates CFG.");
+                "Keyword THEN missing.");
         Statement sub1 = s.newInstance();
         sub1.parseBlock(tokens);
         if (tokens.front().equals("ELSE")) {
@@ -80,18 +80,18 @@ public final class Statement1Parse1 extends Statement1 {
             s.parseBlock(tokens);
             String end = tokens.dequeue();
             Reporter.assertElseFatalError(end.equals("END"),
-                    "Keyword violates CFG.");
+                    "Keyword END missing.");
             String iF = tokens.dequeue();
             Reporter.assertElseFatalError(iF.equals("IF"),
-                    "Keyword violates CFG.");
+                    "Keyword IF missing");
             s.assembleIfElse(parseCondition(condition), sub1, sub2);
         } else {
             String end = tokens.dequeue();
             Reporter.assertElseFatalError(end.equals("END"),
-                    "Keyword violates CFG.");
+                    "Keyword END missing");
             String iF = tokens.dequeue();
             Reporter.assertElseFatalError(iF.equals("IF"),
-                    "Keyword violates CFG.");
+                    "Keyword IF missing");
             s.assembleIf(parseCondition(condition), sub1);
         }
 
@@ -129,15 +129,15 @@ public final class Statement1Parse1 extends Statement1 {
         Reporter.assertElseFatalError(Tokenizer.isCondition(condition),
                 "Shoud be a valid condition.");
         String dO = tokens.dequeue();
-        Reporter.assertElseFatalError(dO.equals("DO"), "Keyword violates CFG.");
+        Reporter.assertElseFatalError(dO.equals("DO"), "Keyword DO missing.");
         Statement sub = s.newInstance();
         sub.parseBlock(tokens);
         String end = tokens.dequeue();
         Reporter.assertElseFatalError(end.equals("END"),
-                "Keyword violates CFG.");
+                "Keyword END missing.");
         String whilE = tokens.dequeue();
         Reporter.assertElseFatalError(whilE.equals("WHILE"),
-                "Keyword violates CFG.");
+                "Keyword WHILE missing.");
         s.assembleWhile(parseCondition(condition), sub);
 
     }
@@ -213,8 +213,13 @@ public final class Statement1Parse1 extends Statement1 {
                 + "Violation of: Tokenizer.END_OF_INPUT is a suffix of tokens";
 
         String prefix = tokens.front();
-        while (prefix.equals("IF") || prefix.equals("WHILE")
-                || Tokenizer.isIdentifier(prefix)) {
+
+        while (!prefix.equals("END") && !prefix.equals("ELSE")
+                && !prefix.equals(Tokenizer.END_OF_INPUT)) {
+            Reporter.assertElseFatalError(
+                    prefix.equals("IF") || prefix.equals("WHILE")
+                            || Tokenizer.isIdentifier(prefix),
+                    "The " + prefix + " is not valid.");
             Statement s = this.newInstance();
             s.parse(tokens);
             this.addToBlock(this.lengthOfBlock(), s);
