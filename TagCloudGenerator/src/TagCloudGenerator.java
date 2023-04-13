@@ -45,44 +45,14 @@ public final class TagCloudGenerator {
         @Override
         public int compare(Map.Pair<String, Integer> o1,
                 Map.Pair<String, Integer> o2) {
-            return o1.key().compareToIgnoreCase(o2.key());
+            return o1.key().compareTo(o2.key());
         }
     }
 
     /**
-     * Generates the set of characters in the given {@code String} into the
-     * given {@code Set}.
-     *
-     * @updates charSet
-     * @param str
-     *            the given {@code String}
-     * @param charSet
-     *            the {@code Set} to be replaced
-     * @replaces charSet
-     * @ensures charSet = entries(str)
-     */
-    public static void generateElements(String str, Set<Character> charSet) {
-        assert str != null : "Violation of: str is not null";
-        assert charSet != null : "Violation of: charSet is not null";
-        Set<Character> temp = charSet.newInstance();
-        for (int i = 0; i < str.length(); i++) {
-            /*
-             * check the repeated character
-             */
-            if (!temp.contains(str.charAt(i))) {
-                temp.add(str.charAt(i));
-            }
-        }
-        /*
-         * replace the charSet
-         */
-        charSet.transferFrom(temp);
-    }
-
-    /**
-     * Returns the first "word" (maximal length string of characters not in
-     * {@code separators}) or "separator string" (maximal length string of
-     * characters in {@code separators}) in the given {@code text} starting at
+     * Returns the first "word" (maximal length string of characters in
+     * {@code letters}) or "separator string" (maximal length string of
+     * characters not in {@code letters}) in the given {@code text} starting at
      * the given {@code position}.
      *
      * @param text
@@ -90,8 +60,8 @@ public final class TagCloudGenerator {
      *            string
      * @param position
      *            the starting index
-     * @param separators
-     *            the {@code Set} of separator characters
+     * @param letters
+     *            the {@code Set} of letter characters
      * @return the first word or separator string found in {@code text} starting
      *         at index {@code position}
      * @requires 0 <= position < |text|
@@ -112,18 +82,18 @@ public final class TagCloudGenerator {
      * </pre>
      */
     public static String nextWordOrSeparator(String text, int position,
-            Set<Character> separators) {
+            Set<Character> letters) {
         assert text != null : "Violation of: text is not null";
-        assert separators != null : "Violation of: separators is not null";
+        assert letters != null : "Violation of: letters is not null";
         assert 0 <= position : "Violation of: 0 <= position";
         assert position < text.length() : "Violation of: position < |text|";
         /*
          * initialize the return string
          */
         String result = text.substring(position, position + 1);
-        boolean isSeparator = separators.contains(text.charAt(position));
+        boolean isLetter = letters.contains(text.charAt(position));
         for (int i = position; i < text.length()
-                && separators.contains(text.charAt(i)) == isSeparator; i++) {
+                && letters.contains(text.charAt(i)) == isLetter; i++) {
             result = text.substring(position, i + 1);
         }
         return result;
@@ -146,26 +116,16 @@ public final class TagCloudGenerator {
     private static void generateMap(String inputName,
             Map<String, Integer> countMap) {
         SimpleReader in = new SimpleReader1L(inputName);
-        Set<Character> se = new Set1L<>();
         /*
-         * define the separators in the text line by line.
+         * define a set containing letters.
          */
-        final int sixtyfive = 65;
-        final int nintyone = 91;
-        final int nintyseven = 97;
-        final int onetwothree = 123;
-        final int twofivesix = 256;
-        String s = "";
-        for (int i = 0; i < sixtyfive; i++) {
-            s = s + (char) i;
+        Set<Character> se = new Set1L<>();
+        for (int i = 'a'; i <= 'z'; i++) {
+            se.add((char) i);
         }
-        for (int i = nintyone; i < nintyseven; i++) {
-            s = s + (char) i;
+        for (int i = 'A'; i <= 'Z'; i++) {
+            se.add((char) i);
         }
-        for (int i = onetwothree; i < twofivesix; i++) {
-            s = s + (char) i;
-        }
-        generateElements(s, se);
         /*
          * generate words from the input text.
          */
@@ -176,7 +136,7 @@ public final class TagCloudGenerator {
 
                 String token = nextWordOrSeparator(str, position, se)
                         .toLowerCase();
-                if (!se.contains(token.charAt(0))) {
+                if (se.contains(token.charAt(0))) {
                     if (countMap.hasKey(token)) {
                         /*
                          * increase the count.
@@ -212,6 +172,8 @@ public final class TagCloudGenerator {
         assert countMap != null : "Violation of: Map is not null";
         assert out != null : "Violation of: out is not null";
         assert out.isOpen() : "Violation of: out.is_open";
+        final int initial = 11;
+        final int difference = 37;
         Comparator<Map.Pair<String, Integer>> c = new Count();
         SortingMachine<Map.Pair<String, Integer>> sm1 = new SortingMachine4<>(
                 c);
@@ -222,17 +184,35 @@ public final class TagCloudGenerator {
             sm1.add(p);
         }
         sm1.changeToExtractionMode();
-        for (int i = 0; i < n; i++) {
+        /*
+         * restore the max count.
+         */
+        Map.Pair<String, Integer> max = sm1.removeFirst();
+        int tmax = max.value();
+        sm2.add(max);
+        for (int i = 1; i < n - 1; i++) {
             sm2.add(sm1.removeFirst());
         }
+        /*
+         * restore the min count.
+         */
+        Map.Pair<String, Integer> min = sm1.removeFirst();
+        int tmin = min.value();
+        sm2.add(min);
         sm2.changeToExtractionMode();
         while (sm2.size() > 0) {
             Map.Pair<String, Integer> newP = sm2.removeFirst();
             String word = newP.key();
             int count = newP.value();
-            out.println("<span style=\"cursor:default\" class=\"f"
-                    + ((count - 25) / 30 + 11) + "\" title=\"count: " + count
-                    + "\">" + word + "</span>");
+            /*
+             * process of deciding font size.
+             */
+            int font = initial;
+            if (count > tmin) {
+                font += difference * (count - tmin) / (tmax - tmin);
+            }
+            out.println("<span style=\"cursor:default\" class=\"f" + font
+                    + "\" title=\"count: " + count + "\">" + word + "</span>");
         }
     }
 
