@@ -1,0 +1,8 @@
+IF invalid THEN
+    turnleft
+    infect
+ELSE
+    go-for-it
+    turnright
+    look-for-something
+END IF

@@ -1,0 +1,11 @@
+PROGRAM Test IS
+
+BEGIN
+  infect
+  IF next-is-empty THEN
+    move
+  ELSE
+    infect
+    skip
+  END IF
+END Test
